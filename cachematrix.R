@@ -4,17 +4,21 @@
 ## This function will return a list of functions. Due to lexical scoping, these functions will all 
 ##      share the same parent environment, the environment they were defined in. This will allow them 
 ##      to operate on the same values. 
+
 ##      This allows function calculateAndCacheMatrixInverse() to access the same base_matrix value 
 ##      which is referenced by the initial assignment from the constructor's parameter as well as 
 ##      functions setBaseMatrix() and getBaseMatrix()
+
 ##      Each call to matrixInverterCached() will produce a new list of functions; this new list of
 ##      functions will have their own distinct parent environment. This means that lists created by
 ##      separate calls to matrixInverterCached() will NOT share the same parent environment, and as a
 ##      result will not operate on the same values. In this sense, the parameter to matrixInverterCached()
 ##      can be thought of as analogous to a parameter being sent to a class constructor method. Methods
 ##      getBaseMatrix() and getInvertedMatrix() are analogous to accessors, and setBaseMatrix() and
-##      setInvertedMatrix() are analogous to mutators in the Object-Oriented concept of encapsulation
-matrixInverterCached <- function(base_matrix_to_construct_with = matrix())
+##      setInvertedMatrix() are analogous to mutators in the Object-Oriented concept of encapsulation.
+##      Function matrixInverterCachedFactory() is analogous to the Factory software pattern in which
+##      a method is used to handle object creation.
+matrixInverterCachedFactory <- function(base_matrix_to_construct_with = matrix())
 {
     base_matrix <- base_matrix_to_construct_with;
     inverse_matrix_to_cache <- NULL;
@@ -71,7 +75,7 @@ matrixInverterCached <- function(base_matrix_to_construct_with = matrix())
 # Parameter x is expected to be an invertible matrix
 makeCacheMatrix <- function(x = matrix())
 {
-    return(matrixInverterCached(x))
+    return(matrixInverterCachedFactory(x))
 }
 
 
@@ -96,7 +100,7 @@ cache_and_return_inverted_matrix <- function(matrixInverterCachedInstance)
 }
 
 # Implementing cacheSolve as an alias for cache_and_return_inverted_matrix
-# Parameter x is expected to be a list returned by a call to function makeCacheMatrix()
+# Parameter x is expected to be a list returned by a call to function matrixInverterCachedFactory()
 cacheSolve <- function(x, ...)
 {
     return(cache_and_return_inverted_matrix(x));
